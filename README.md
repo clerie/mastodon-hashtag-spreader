@@ -10,5 +10,5 @@ We have a script on one of our servers, streaming all posts of one hashtag from 
 pip3 install Mastodon.py
 git clone https://github.com/clerie/mastodon-hashtag-spreader.git
 cd mastodon-hashtag-spreader/
-python3 hashtag_stream.py
+python3 hashtag-spreader.py
 ```
