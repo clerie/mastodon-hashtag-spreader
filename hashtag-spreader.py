@@ -1,6 +1,11 @@
 import json
 from mastodon import Mastodon, StreamListener
 
+
+def print_status(status):
+    print("time: " + str(status["created_at"]))
+    print("from: @" + status["account"]["acct"])
+
 with open("config.json", 'r') as f:
     config = json.load(f)
 
@@ -18,11 +23,17 @@ if config:
     class TootListener(StreamListener):
         def on_update(self, status):
             print("")
-            print(" -- new status in chaos.social -- ")
-            print(status)
+            print(" -- new status in " + config["source"]["url"] + " -- ")
+            print_status(status)
+            #print(status)
             print("")
-            print(" -- search in fem.social -- ")
-            print(fem_social.search(status.url))
+            print(" -- search in " + config["drain"]["url"] + " -- ")
+            try:
+                search = fem_social.search(status.url)
+                for s in search["statuses"]:
+                    print_status(s)
+            except:
+                print("failed")
 
     tootListener = TootListener()
 
