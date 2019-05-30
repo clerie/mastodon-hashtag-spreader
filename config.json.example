@@ -1,0 +1,11 @@
+{
+  "source": {
+    "url": "https://chaos.social",
+    "token": "",
+    "hashtag": "gpn19"
+  },
+  "drain": {
+    "url": "https://fem.social",
+    "token": ""
+  }
+}
