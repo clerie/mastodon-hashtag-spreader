@@ -1,9 +1,9 @@
 # Mastodon Hashtag Spreader
 
-For the #GPN19 my Mastodon instance [fem.social](https://fem.social) wants to get all posts of the hashtag. Most users of this event are connected to the instance [chaos.social](https://chaos.social).
+For #GPN19 my Mastodon instance [fem.social](https://fem.social) wants to get all posts for this hashtag. Most users at this event are connected to the instance [chaos.social](https://chaos.social).
 
 ## Our solution
-We have a script on one of our servers, streaming all posts of one hashtag from chaos.social and putting the URL of the post to the search entry of our own instance. The URL will get fetched by our instance and the resulting post is added to our hashtag timeline.
+We have a script on one of our servers which streams all posts for specific hashtag from chaos.social and puts the URLs of those posts into the search entry of our own instance. Thus, the URLs will get fetched by our instance and the posts is added to our hashtag timeline.
 
 ## Installation
 ```bash
