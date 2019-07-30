@@ -1,11 +1,16 @@
 {
-  "source": {
-    "url": "https://chaos.social",
-    "token": "",
-    "hashtag": "gpn19"
+  "instances": {
+    "chaos.social": "secret",
+    "fem.social": "secret"
   },
-  "drain": {
-    "url": "https://fem.social",
-    "token": ""
-  }
+  "spreads": [
+    {
+      "source": "chaos.social",
+      "drain": "fem.social",
+      "hashtags": [
+        "gpn19",
+        "cccamp19"
+      ]
+    }
+  ]
 }

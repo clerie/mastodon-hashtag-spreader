@@ -1,4 +1,7 @@
+#!/usr/bin/env python3
+
 import json
+from threading import Thread
 from mastodon import Mastodon, StreamListener
 
 
@@ -6,35 +9,53 @@ def print_status(status):
     print("time: " + str(status["created_at"]))
     print("from: @" + status["account"]["acct"])
 
-with open("config.json", 'r') as f:
-    config = json.load(f)
+class TootListener(StreamListener):
+    def __init__(self, source, drain):
+        self.source = source
+        self.drain = drain
 
-if config:
-    chaos_social = Mastodon(
-        access_token = config["source"]["token"],
-        api_base_url = config["source"]["url"]
-    )
+    def on_update(self, status):
+        print("")
+        print("--")
+        print("RECIEVE " + self.source.api_base_url + "")
+        print_status(status)
+        print("SEARCH " + self.drain.api_base_url + "")
+        try:
+            search = self.drain.search(status.url)
+            for s in search["statuses"]:
+                print_status(s)
+        except:
+            print("failed")
+        print("--")
 
-    fem_social = Mastodon(
-        access_token = config["drain"]["token"],
-        api_base_url = config["drain"]["url"]
-    )
+class HashtagSpreader(Thread):
+    def __init__(self, source, drain, hashtag):
+        Thread.__init__(self)
 
-    class TootListener(StreamListener):
-        def on_update(self, status):
-            print("")
-            print(" -- new status in " + config["source"]["url"] + " -- ")
-            print_status(status)
-            #print(status)
-            print("")
-            print(" -- search in " + config["drain"]["url"] + " -- ")
-            try:
-                search = fem_social.search(status.url)
-                for s in search["statuses"]:
-                    print_status(s)
-            except:
-                print("failed")
+        self.source = source
+        self.drain = drain
+        self.hashtag = hashtag
 
-    tootListener = TootListener()
+    def run(self):
+        tootListener = TootListener(self.source, self.drain)
+        self.source.stream_hashtag(self.hashtag, tootListener)
 
-    chaos_social.stream_hashtag(config["source"]["hashtag"], tootListener, run_async=False, timeout=300, reconnect_async=False, reconnect_async_wait_sec=5)
+if __name__ == "__main__":
+    instances = {}
+    threads = []
+
+    with open("config.json", 'r') as f:
+        config = json.load(f)
+
+    if config:
+        for instance in config["instances"]:
+            instances[instance] = Mastodon(access_token = config["instances"][instance], api_base_url = "https://" + instance)
+
+        for spread in config["spreads"]:
+            if spread["source"] in instances and spread["drain"] in instances:
+                for hashtag in spread["hashtags"]:
+                    threads.append(HashtagSpreader(instances[spread["source"]], instances[spread["drain"]], hashtag))
+
+
+    for thread in threads:
+        thread.start()
