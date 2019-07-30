@@ -1,7 +1,7 @@
 {
   "instances": {
-    "chaos.social": "secret",
-    "fem.social": "secret"
+    "chaos.social": "access-token",
+    "fem.social": "access-token"
   },
   "spreads": [
     {
