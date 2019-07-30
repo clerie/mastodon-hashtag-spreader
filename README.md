@@ -3,7 +3,7 @@
 For the #GPN19 my Mastodon instance [fem.social](https://fem.social) wants to get all posts of the hashtag. Most users of this event are connected to the instance [chaos.social](https://chaos.social).
 
 ## Our solution
-We have a script on one of our servers, streaming all posts of one hashtag from chaos.socail and putting the url of the post to the search entry of our own instance. The url will get fetched by our instace and the resulting post is added to our hashtag timeline.
+We have a script on one of our servers, streaming all posts of one hashtag from chaos.social and putting the URL of the post to the search entry of our own instance. The URL will get fetched by our instance and the resulting post is added to our hashtag timeline.
 
 ## Installation
 ```bash
